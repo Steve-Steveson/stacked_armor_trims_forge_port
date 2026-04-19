@@ -22,6 +22,7 @@ public class SmithingTrimRecipeMixin {
     @Inject(method = "assemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/armortrim/ArmorTrim;getTrim(Lnet/minecraft/core/RegistryAccess;Lnet/minecraft/world/item/ItemStack;)Ljava/util/Optional;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void allowDuplicateTrims(Container pContainer, RegistryAccess pRegistryAccess, CallbackInfoReturnable<ItemStack> cir, ItemStack itemstack, Optional optional, Optional optional1){
 //        if(!StackedArmorTrimsForgeMod.currentGameRules.getBoolean(StackedTrimGameRules.ALLOW_DUPLICATE_TRIMS)) return;
+        if (1 + 1 == 2) return;
 
         ItemStack itemStack2 = itemstack.copy();
         itemStack2.setCount(1);
@@ -36,11 +37,14 @@ public class SmithingTrimRecipeMixin {
     public void checkForDuplicateTrims(Container pContainer, RegistryAccess pRegistryAccess, CallbackInfoReturnable<ItemStack> cir, ItemStack itemstack, Optional optional, Optional optional1, Optional optional2){
         ArmorTrimList.getTrims(pRegistryAccess, itemstack).ifPresent((armorTrims) -> {
             for (ArmorTrim armorTrim : armorTrims) {
-                if (armorTrim.equals((Holder)optional1.get(), (Holder)optional.get())) {
+                if (armorTrim.hasPatternAndMaterial((Holder)optional1.get(), (Holder)optional.get())) {
                     cir.setReturnValue(ItemStack.EMPTY);
                     cir.cancel();
                     return;
                 }
+//                if (armorTrim.pattern() == optional1.get() ) {
+//
+//                }
             }
         });
     }

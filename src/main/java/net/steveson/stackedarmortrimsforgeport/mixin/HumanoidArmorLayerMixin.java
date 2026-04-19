@@ -34,7 +34,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
     @Final
     private final TextureAtlas armorTrimAtlas;
 
-    @Shadow protected abstract void renderTrim(ArmorMaterial pArmorMaterial, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, ArmorTrim pTrim, A pModel, boolean pInnerTexture);
+    @Shadow protected abstract void renderTrim(ArmorMaterial pArmorMaterial, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, ArmorTrim pTrim, net.minecraft.client.model.Model pModel, boolean pInnerTexture);
 
     @Shadow protected abstract void renderGlint(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, A pModel);
 
@@ -46,12 +46,12 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Inject(method = "renderArmorPiece", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;hasFoil()Z", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void mixinRenderTrim(PoseStack pPoseStack, MultiBufferSource pBuffer, T pLivingEntity, EquipmentSlot pSlot, int pPackedLight, A pModel, CallbackInfo ci, ItemStack itemstack, Item $$9, ArmorItem armoritem, Model model, boolean flag) {
-//        ArmorTrimList.getTrims(pLivingEntity.level().registryAccess(), itemstack).ifPresent((armorTrims) -> {
-//            Collections.reverse(armorTrims);
-//            for (ArmorTrim armorTrim : armorTrims) {
-//                renderTrim(armoritem.getMaterial(), pPoseStack, pBuffer, pPackedLight, armorTrim, pModel, flag);
-//            }
-//        });
+        ArmorTrimList.getTrims(pLivingEntity.level().registryAccess(), itemstack).ifPresent((armorTrims) -> {
+            Collections.reverse(armorTrims);
+            for (ArmorTrim armorTrim : armorTrims) {
+                renderTrim(armoritem.getMaterial(), pPoseStack, pBuffer, pPackedLight, armorTrim, model, flag);
+            }
+        });
         if (itemstack.hasFoil()) {
             renderGlint(pPoseStack, pBuffer, pPackedLight, pModel);
         }

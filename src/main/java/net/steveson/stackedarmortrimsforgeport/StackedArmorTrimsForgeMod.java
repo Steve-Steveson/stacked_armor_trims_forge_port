@@ -33,6 +33,7 @@ public class StackedArmorTrimsForgeMod
 
         modEventBus.addListener(this::commonSetup);
 
+        MinecraftForge.EVENT_BUS.register(new StackedArmorTrimsForgeGameRules());
         MinecraftForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
