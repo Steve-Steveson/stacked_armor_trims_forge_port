@@ -86,6 +86,18 @@ public abstract class ArmorTrimMixin {
                 nbtList.add(preStacked);
             }
         }
+
+        if(server != null && !server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.ALLOW_DUPLICATE_TRIMS)){
+            for (int i = nbtList.size() - 1; i >= 0; i--) {
+                Tag tag = nbtList.get(i);
+                DataResult<ArmorTrim> result = ArmorTrim.CODEC.parse(RegistryOps.create(NbtOps.INSTANCE, pRegistryAccess), tag);
+
+                if (result.result().isPresent() && result.result().get().pattern() == pTrim.pattern()) {
+                    nbtList.remove(tag);
+                }
+            }
+        };
+
         if (nbtList.size() >= limit) {
             cir.setReturnValue(false);
             return;

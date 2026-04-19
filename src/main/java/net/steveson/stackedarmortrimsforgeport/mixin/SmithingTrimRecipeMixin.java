@@ -41,15 +41,12 @@ public class SmithingTrimRecipeMixin {
     @Inject(method = "assemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;copy()Lnet/minecraft/world/item/ItemStack;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void checkForDuplicateTrims(Container pContainer, RegistryAccess pRegistryAccess, CallbackInfoReturnable<ItemStack> cir, ItemStack itemstack, Optional optional, Optional optional1, Optional optional2){
         ArmorTrimList.getTrims(pRegistryAccess, itemstack).ifPresent((armorTrims) -> {
-            for (ArmorTrim armorTrim : armorTrims) {
-                if (armorTrim.hasPatternAndMaterial((Holder)optional1.get(), (Holder)optional.get())) {
-                    cir.setReturnValue(ItemStack.EMPTY);
-                    cir.cancel();
-                    return;
-                }
-//                if (armorTrim.pattern() == optional1.get() ) {
-//
-//                }
+
+            ArmorTrim armorTrim = armorTrims.get(armorTrims.size()-1);
+            if (armorTrim.hasPatternAndMaterial((Holder)optional1.get(), (Holder)optional.get())) {
+                cir.setReturnValue(ItemStack.EMPTY);
+                cir.cancel();
+                return;
             }
         });
     }
