@@ -1,0 +1,12 @@
+{
+  "type": "stacked_armor_trims_for_forge:smithing_trim_remove",
+  "addition": {
+    "tag": "minecraft:axes"
+  },
+  "base": {
+    "tag": "minecraft:trimmable_armor"
+  },
+  "template": {
+    "item": "minecraft:silence_armor_trim_smithing_template"
+  }
+}

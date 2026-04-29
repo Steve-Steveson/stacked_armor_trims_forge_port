@@ -8,6 +8,7 @@
   },
   "mixins": [
     "ArmorTrimMixin",
+    "SmithingMenuMixin",
     "SmithingTrimRecipeMixin"
   ],
   "client": [
