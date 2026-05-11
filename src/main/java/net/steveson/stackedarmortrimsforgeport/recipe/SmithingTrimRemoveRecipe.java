@@ -1,11 +1,17 @@
 package net.steveson.stackedarmortrimsforgeport.recipe;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.DataResult;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.GsonHelper;
@@ -18,7 +24,9 @@ import net.minecraft.world.level.Level;
 import net.steveson.stackedarmortrimsforgeport.util.Helper;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class SmithingTrimRemoveRecipe implements SmithingRecipe {
@@ -38,14 +46,35 @@ public class SmithingTrimRemoveRecipe implements SmithingRecipe {
      * Used to check if a recipe matches current crafting inventory
      */
     public boolean matches(Container pContainer, Level pLevel) {
-        return this.template.test(pContainer.getItem(0)) && this.base.test(pContainer.getItem(1)) && this.addition.test(pContainer.getItem(2));
+        if (!this.base.test(pContainer.getItem(1)))
+            return false;
+        if (!this.addition.test(pContainer.getItem(2)))
+            return false;
+//        if(this.template.isEmpty() && pContainer.getItem(0).isEmpty())
+//            return true;
+        if(pContainer.getItem(0).isEmpty() && this.template.test(Items.BARRIER.getDefaultInstance())) {
+//            System.out.println(pContainer.getItem(0)); //0 air
+//            System.out.println(pContainer.getItem(2));
+//            System.out.println(this.template.toString()); //random hexcode
+//            System.out.println(Arrays.stream(this.addition.getItems()).toList());
+            System.out.println(Arrays.stream(this.template.getItems()).toList());
+//            System.out.println(this.template.isEmpty());
+//            System.out.println(this.template.test(ItemStack.EMPTY));
+//            System.out.println(Items.AIR.getDefaultInstance()); //0 air
+            System.out.println(this.template.test(Items.BARRIER.getDefaultInstance()));
+            return true;
+        }
+//        if (this.template.test(Items.AIR) == null)
+//            return false;
+        return this.template.test(pContainer.getItem(0));
+//        return true;
     }
 
     public ItemStack assemble(Container pContainer, RegistryAccess pRegistryAccess) {
         ItemStack itemstack = pContainer.getItem(1);
         if (this.base.test(itemstack)) {
 //            Optional<Holder.Reference<TrimMaterial>> optional = TrimMaterials.getFromIngredient(pRegistryAccess, pContainer.getItem(2));
-//            Optional<Holder.Reference<TrimPattern>> optional1 = TrimPatterns.getFromTemplate(pRegistryAccess, pContainer.getItem(0));
+            Optional<Holder.Reference<TrimPattern>> optional1 = TrimPatterns.getFromTemplate(pRegistryAccess, pContainer.getItem(0));
             if (pContainer.getItem(2).is(ItemTags.AXES)) {
                 Optional<ArmorTrim> optional2 = ArmorTrim.getTrim(pRegistryAccess, itemstack);
 
@@ -56,10 +85,59 @@ public class SmithingTrimRemoveRecipe implements SmithingRecipe {
 
                 ItemStack itemstack1 = itemstack.copy();
 
+                CompoundTag nbt = itemstack.getOrCreateTag();
+                if(nbt.contains("Trims")){
+                    ListTag nbtList = nbt.getList("Trims", 10);
 
-                itemstack1.setCount(1);
-                ArmorTrim armortrim = optional2.get();
-                if (ArmorTrim.setTrim(pRegistryAccess, itemstack1, armortrim)) {
+                    int indexToRemove = -1;
+
+                    if(optional1.isPresent()){
+                        for (int i = nbtList.size() - 1; i >= 0; i--) {
+                            Tag tag = nbtList.get(i);
+                            DataResult<ArmorTrim> result = ArmorTrim.CODEC.parse(RegistryOps.create(NbtOps.INSTANCE, pRegistryAccess), tag);
+
+                            if (result.result().isPresent() && result.result().get().pattern() == optional1.get()) {
+                                indexToRemove = i;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        indexToRemove = nbtList.size() - 1;
+                    }
+
+                    if (indexToRemove == -1) {
+                        return ItemStack.EMPTY;
+                    }
+
+                    CompoundTag nbtOutput = itemstack1.getOrCreateTag();
+                    ListTag nbtListOutput = nbtOutput.getList("Trims", 10);
+
+                    nbtListOutput.remove(indexToRemove);
+
+                    if (nbtList.size() == 1) {
+                        nbtOutput.remove("Trims");
+                        nbtOutput.remove("Trim");
+                    }
+                    else if (indexToRemove == nbtList.size() - 1) {
+                        System.out.println("I removed the last item!");
+                        nbtOutput.put("Trim", nbtListOutput.get(nbtListOutput.size() - 1).copy());
+                    }
+
+                    return itemstack1;
+                }
+                else if(itemstack.getOrCreateTag().contains("Trim")){
+                    if(optional1.isPresent()){
+                        if(optional2.get().pattern() == optional1.get()){
+                            itemstack1.getTag().remove("Trim");
+                        }
+                        else {
+                            return ItemStack.EMPTY;
+                        }
+                    }
+                    else {
+                        itemstack1.getTag().remove("Trim");
+                    }
                     return itemstack1;
                 }
             }

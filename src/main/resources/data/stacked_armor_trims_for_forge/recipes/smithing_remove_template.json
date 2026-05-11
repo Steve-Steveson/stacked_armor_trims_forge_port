@@ -7,6 +7,6 @@
     "tag": "minecraft:trimmable_armor"
   },
   "template": {
-    "item": "minecraft:silence_armor_trim_smithing_template"
+    "tag": "minecraft:trim_templates"
   }
 }

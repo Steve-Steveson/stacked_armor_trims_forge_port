@@ -60,7 +60,6 @@ public abstract class ArmorTrimMixin {
         CompoundTag nbt = pArmor.getOrCreateTag();
         if (!nbt.contains("Trims")) {
             ListTag nbtList = new ListTag();
-            nbtList.add(ArmorTrim.CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, pRegistryAccess), pTrim).result().orElseThrow());
             // There is a Trim NBT but no Trims NBT, that means Stacked Trims was installed after Trims were applied. This code merges these old trims.
             if(nbt.contains("Trim")) {
                 ListTag nbtList1 = nbt.getList("Trim", 10);
@@ -70,9 +69,12 @@ public abstract class ArmorTrimMixin {
                 } else {
                     nbtList.add(nbtList1);
                 }
-                assert pArmor.getTag() != null;
-                pArmor.getTag().remove("Trim");
+//                assert pArmor.getTag() != null;
+//                pArmor.getTag().remove("Trim");
             }
+
+            nbtList.add(ArmorTrim.CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, pRegistryAccess), pTrim).result().orElseThrow());
+
             pArmor.getOrCreateTag().put("Trim", (Tag)CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, pRegistryAccess), pTrim).result().orElseThrow());
             nbt.put("Trims", nbtList);
             cir.setReturnValue(true);
@@ -114,14 +116,16 @@ public abstract class ArmorTrimMixin {
     private static void getLastTrim(RegistryAccess pRegistryAccess, ItemStack pArmor, CallbackInfoReturnable<Optional<ArmorTrim>> cir) {
         assert pArmor.getTag() != null;
         if(!pArmor.getTag().contains("Trims")) {
-            cir.setReturnValue(Optional.empty());
+//            cir.setReturnValue(Optional.empty());
             return;
         }
 
         ListTag nbtList = pArmor.getTag().getList("Trims", 10);
         Tag nbtElement;
-        if (nbtList.isEmpty()) nbtElement = pArmor.getTag().get("Trim");
-        else nbtElement = nbtList.get(nbtList.size()-1);
+        if (nbtList.isEmpty())
+            nbtElement = pArmor.getTag().get("Trim");
+        else
+            nbtElement = nbtList.get(nbtList.size()-1);
         if(nbtElement == null) {
             cir.setReturnValue(Optional.empty());
             return;

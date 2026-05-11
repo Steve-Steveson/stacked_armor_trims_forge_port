@@ -36,7 +36,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
 
     @Shadow protected abstract void renderTrim(ArmorMaterial pArmorMaterial, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, ArmorTrim pTrim, net.minecraft.client.model.Model pModel, boolean pInnerTexture);
 
-    @Shadow protected abstract void renderGlint(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, A pModel);
+//    @Shadow protected abstract void renderGlint(PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, A pModel);
 
 
     public HumanoidArmorLayerMixin(RenderLayerParent<T, M> pRenderer, TextureAtlas armorTrimsAtlas) {
@@ -52,8 +52,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, M extends 
                 renderTrim(armoritem.getMaterial(), pPoseStack, pBuffer, pPackedLight, armorTrim, model, flag);
             }
         });
-        if (itemstack.hasFoil()) {
-            renderGlint(pPoseStack, pBuffer, pPackedLight, pModel);
-        }
+//        if (itemstack.hasFoil()) {
+//            renderGlint(pPoseStack, pBuffer, pPackedLight, pModel);
+//        }
     }
 }

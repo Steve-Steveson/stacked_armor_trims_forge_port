@@ -42,8 +42,6 @@ public abstract class SmithingMenuMixin extends ItemCombinerMenu{
                 );
             }
 
-            System.out.println("I CANNOT BE DESTROYED");
-
             this.access.execute((p_40263_, p_40264_) -> {
                 p_40263_.levelEvent(1044, p_40264_, 0);
             });
