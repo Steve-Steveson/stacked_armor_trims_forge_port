@@ -41,10 +41,6 @@ public class StackedArmorTrimsForgeMod
 
         MinecraftForge.EVENT_BUS.register(new StackedArmorTrimsForgeGameRules());
         MinecraftForge.EVENT_BUS.register(this);
-
-        modEventBus.addListener(this::addCreative);
-
-        context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -52,11 +48,6 @@ public class StackedArmorTrimsForgeMod
 
     }
 
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event)
-    {
-
-    }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent

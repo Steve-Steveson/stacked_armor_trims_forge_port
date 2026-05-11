@@ -89,7 +89,9 @@ public abstract class ArmorTrimMixin {
             }
         }
 
-        if(server != null && !server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.ALLOW_DUPLICATE_TRIMS)){
+        if(server != null &&
+//                !server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.ALLOW_DUPLICATE_TRIMS) &&
+                server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.OVERRIDE_MATCHING_TRIM_PATTERNS)){
             for (int i = nbtList.size() - 1; i >= 0; i--) {
                 Tag tag = nbtList.get(i);
                 DataResult<ArmorTrim> result = ArmorTrim.CODEC.parse(RegistryOps.create(NbtOps.INSTANCE, pRegistryAccess), tag);

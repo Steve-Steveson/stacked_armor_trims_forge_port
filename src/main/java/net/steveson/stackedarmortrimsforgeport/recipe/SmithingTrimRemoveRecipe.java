@@ -50,30 +50,14 @@ public class SmithingTrimRemoveRecipe implements SmithingRecipe {
             return false;
         if (!this.addition.test(pContainer.getItem(2)))
             return false;
-//        if(this.template.isEmpty() && pContainer.getItem(0).isEmpty())
-//            return true;
-        if(pContainer.getItem(0).isEmpty() && this.template.test(Items.BARRIER.getDefaultInstance())) {
-//            System.out.println(pContainer.getItem(0)); //0 air
-//            System.out.println(pContainer.getItem(2));
-//            System.out.println(this.template.toString()); //random hexcode
-//            System.out.println(Arrays.stream(this.addition.getItems()).toList());
-            System.out.println(Arrays.stream(this.template.getItems()).toList());
-//            System.out.println(this.template.isEmpty());
-//            System.out.println(this.template.test(ItemStack.EMPTY));
-//            System.out.println(Items.AIR.getDefaultInstance()); //0 air
-            System.out.println(this.template.test(Items.BARRIER.getDefaultInstance()));
+        if(pContainer.getItem(0).isEmpty() && this.template.test(Items.BARRIER.getDefaultInstance()))
             return true;
-        }
-//        if (this.template.test(Items.AIR) == null)
-//            return false;
         return this.template.test(pContainer.getItem(0));
-//        return true;
     }
 
     public ItemStack assemble(Container pContainer, RegistryAccess pRegistryAccess) {
         ItemStack itemstack = pContainer.getItem(1);
         if (this.base.test(itemstack)) {
-//            Optional<Holder.Reference<TrimMaterial>> optional = TrimMaterials.getFromIngredient(pRegistryAccess, pContainer.getItem(2));
             Optional<Holder.Reference<TrimPattern>> optional1 = TrimPatterns.getFromTemplate(pRegistryAccess, pContainer.getItem(0));
             if (pContainer.getItem(2).is(ItemTags.AXES)) {
                 Optional<ArmorTrim> optional2 = ArmorTrim.getTrim(pRegistryAccess, itemstack);
@@ -120,7 +104,6 @@ public class SmithingTrimRemoveRecipe implements SmithingRecipe {
                         nbtOutput.remove("Trim");
                     }
                     else if (indexToRemove == nbtList.size() - 1) {
-                        System.out.println("I removed the last item!");
                         nbtOutput.put("Trim", nbtListOutput.get(nbtListOutput.size() - 1).copy());
                     }
 

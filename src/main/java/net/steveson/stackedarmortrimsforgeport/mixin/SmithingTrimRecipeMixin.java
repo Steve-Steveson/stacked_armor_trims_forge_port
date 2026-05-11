@@ -42,11 +42,23 @@ public class SmithingTrimRecipeMixin {
     public void checkForDuplicateTrims(Container pContainer, RegistryAccess pRegistryAccess, CallbackInfoReturnable<ItemStack> cir, ItemStack itemstack, Optional optional, Optional optional1, Optional optional2){
         ArmorTrimList.getTrims(pRegistryAccess, itemstack).ifPresent((armorTrims) -> {
 
-            ArmorTrim armorTrim = armorTrims.get(armorTrims.size()-1);
-            if (armorTrim.hasPatternAndMaterial((Holder)optional1.get(), (Holder)optional.get())) {
-                cir.setReturnValue(ItemStack.EMPTY);
-                cir.cancel();
-                return;
+            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            if (server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.OVERRIDE_MATCHING_TRIM_PATTERNS)) {
+
+                ArmorTrim armorTrim = armorTrims.get(armorTrims.size() - 1);
+                if (armorTrim.hasPatternAndMaterial((Holder) optional1.get(), (Holder) optional.get())) {
+                    cir.setReturnValue(ItemStack.EMPTY);
+                    cir.cancel();
+                    return;
+                }
+            } else {
+                for (ArmorTrim armorTrim : armorTrims) {
+                    if (armorTrim.hasPatternAndMaterial((Holder)optional1.get(), (Holder)optional.get())) {
+                        cir.setReturnValue(ItemStack.EMPTY);
+                        cir.cancel();
+                        return;
+                    }
+                }
             }
         });
     }
