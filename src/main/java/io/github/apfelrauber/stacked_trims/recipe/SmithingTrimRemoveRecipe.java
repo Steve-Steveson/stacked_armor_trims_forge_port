@@ -1,9 +1,8 @@
-package net.steveson.stackedarmortrimsforgeport.recipe;
+package io.github.apfelrauber.stacked_trims.recipe;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.DataResult;
 import net.minecraft.core.Holder;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -21,12 +20,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.armortrim.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.steveson.stackedarmortrimsforgeport.util.Helper;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public class SmithingTrimRemoveRecipe implements SmithingRecipe {

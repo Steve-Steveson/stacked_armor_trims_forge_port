@@ -1,4 +1,4 @@
-package net.steveson.stackedarmortrimsforgeport;
+package io.github.apfelrauber.stacked_trims;
 
 import com.mojang.serialization.DataResult;
 import net.minecraft.core.RegistryAccess;

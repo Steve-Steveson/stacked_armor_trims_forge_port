@@ -1,8 +1,8 @@
-package net.steveson.stackedarmortrimsforgeport;
+package io.github.apfelrauber.stacked_trims;
 
 import net.minecraft.world.level.GameRules;
 
-public class StackedArmorTrimsForgeGameRules {
+public class StackedTrimGameRules {
 
     public static GameRules.Key<GameRules.BooleanValue> ALLOW_DUPLICATE_TRIMS = GameRules
             .register("allowDuplicateTrims", GameRules.Category.MISC, GameRules.BooleanValue.create(false));

@@ -1,35 +1,32 @@
-package net.steveson.stackedarmortrimsforgeport;
+package io.github.apfelrauber.stacked_trims;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.world.level.GameRules;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.steveson.stackedarmortrimsforgeport.recipe.ModRecipes;
+import io.github.apfelrauber.stacked_trims.recipe.ModRecipes;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(StackedArmorTrimsForgeMod.MOD_ID)
-public class StackedArmorTrimsForgeMod
+@Mod(StackedTrimsMod.MOD_ID)
+public class StackedTrimsMod
 {
     //always false because no such mod exists for forge
     public static final Boolean isBetterTrimTooltipsEnables = ModList.get().isLoaded("better-trim-tooltips");
 
 
     // Define mod id in a common place for everything to reference
-    public static final String MOD_ID = "stacked_armor_trims_for_forge";
+    public static final String MOD_ID = "stacked_armor_trims";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
-    public StackedArmorTrimsForgeMod(FMLJavaModLoadingContext context)
+    public StackedTrimsMod(FMLJavaModLoadingContext context)
     {
         IEventBus modEventBus = context.getModEventBus();
 
@@ -39,7 +36,7 @@ public class StackedArmorTrimsForgeMod
 
         modEventBus.addListener(this::commonSetup);
 
-        MinecraftForge.EVENT_BUS.register(new StackedArmorTrimsForgeGameRules());
+        MinecraftForge.EVENT_BUS.register(new StackedTrimGameRules());
         MinecraftForge.EVENT_BUS.register(this);
     }
 

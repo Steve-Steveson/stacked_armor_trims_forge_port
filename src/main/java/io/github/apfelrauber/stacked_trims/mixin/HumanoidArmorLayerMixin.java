@@ -1,4 +1,4 @@
-package net.steveson.stackedarmortrimsforgeport.mixin;
+package io.github.apfelrauber.stacked_trims.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
@@ -15,7 +15,7 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.ArmorTrim;
-import net.steveson.stackedarmortrimsforgeport.ArmorTrimList;
+import io.github.apfelrauber.stacked_trims.ArmorTrimList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;

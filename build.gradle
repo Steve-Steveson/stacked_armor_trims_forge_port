@@ -173,8 +173,8 @@ tasks.named('processResources', ProcessResources).configure {
 
 mixin {
     // MixinGradle Settings
-    add sourceSets.main, 'mixins.stacked_armor_trims_for_forge.refmap.json'
-    config 'mixins.stacked_armor_trims_for_forge.json'
+    add sourceSets.main, 'mixins.stacked_trims.refmap.json'
+    config 'mixins.stacked_trims.json'
 
     debug.verbose = true
     debug.export = true

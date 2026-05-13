@@ -1,4 +1,4 @@
-package net.steveson.stackedarmortrimsforgeport.util;
+package io.github.apfelrauber.stacked_trims.util;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;

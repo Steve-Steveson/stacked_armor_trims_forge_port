@@ -1,18 +1,15 @@
-package net.steveson.stackedarmortrimsforgeport.mixin;
+package io.github.apfelrauber.stacked_trims.mixin;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.crafting.SmithingTrimRecipe;
-import net.minecraft.world.level.GameRules;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import net.steveson.stackedarmortrimsforgeport.ArmorTrimList;
-import net.steveson.stackedarmortrimsforgeport.StackedArmorTrimsForgeGameRules;
-import net.steveson.stackedarmortrimsforgeport.StackedArmorTrimsForgeMod;
+import io.github.apfelrauber.stacked_trims.ArmorTrimList;
+import io.github.apfelrauber.stacked_trims.StackedTrimGameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,7 +24,7 @@ public class SmithingTrimRecipeMixin {
     public void allowDuplicateTrims(Container pContainer, RegistryAccess pRegistryAccess, CallbackInfoReturnable<ItemStack> cir, ItemStack itemstack, Optional optional, Optional optional1){
 
          MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        if(server != null && !server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.ALLOW_DUPLICATE_TRIMS))return;
+        if(server != null && !server.getGameRules().getBoolean(StackedTrimGameRules.ALLOW_DUPLICATE_TRIMS))return;
 
         ItemStack itemStack2 = itemstack.copy();
         itemStack2.setCount(1);
@@ -43,7 +40,7 @@ public class SmithingTrimRecipeMixin {
         ArmorTrimList.getTrims(pRegistryAccess, itemstack).ifPresent((armorTrims) -> {
 
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-            if (server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.OVERRIDE_MATCHING_TRIM_PATTERNS)) {
+            if (server.getGameRules().getBoolean(StackedTrimGameRules.OVERRIDE_MATCHING_TRIM_PATTERNS)) {
 
                 ArmorTrim armorTrim = armorTrims.get(armorTrims.size() - 1);
                 if (armorTrim.hasPatternAndMaterial((Holder) optional1.get(), (Holder) optional.get())) {

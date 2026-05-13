@@ -1,4 +1,4 @@
-package net.steveson.stackedarmortrimsforgeport.mixin;
+package io.github.apfelrauber.stacked_trims.mixin;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -20,8 +20,8 @@ import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimPattern;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import net.steveson.stackedarmortrimsforgeport.StackedArmorTrimsForgeGameRules;
-import net.steveson.stackedarmortrimsforgeport.StackedArmorTrimsForgeMod;
+import io.github.apfelrauber.stacked_trims.StackedTrimGameRules;
+import io.github.apfelrauber.stacked_trims.StackedTrimsMod;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,7 +50,7 @@ public abstract class ArmorTrimMixin {
             return;
         }
 
-        int limit = server.getGameRules().getInt(StackedArmorTrimsForgeGameRules.MAX_TRIM_STACK);
+        int limit = server.getGameRules().getInt(StackedTrimGameRules.MAX_TRIM_STACK);
 
         if (limit == 0) {
             cir.setReturnValue(false);
@@ -91,7 +91,7 @@ public abstract class ArmorTrimMixin {
 
         if(server != null &&
 //                !server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.ALLOW_DUPLICATE_TRIMS) &&
-                server.getGameRules().getBoolean(StackedArmorTrimsForgeGameRules.OVERRIDE_MATCHING_TRIM_PATTERNS)){
+                server.getGameRules().getBoolean(StackedTrimGameRules.OVERRIDE_MATCHING_TRIM_PATTERNS)){
             for (int i = nbtList.size() - 1; i >= 0; i--) {
                 Tag tag = nbtList.get(i);
                 DataResult<ArmorTrim> result = ArmorTrim.CODEC.parse(RegistryOps.create(NbtOps.INSTANCE, pRegistryAccess), tag);
@@ -140,7 +140,7 @@ public abstract class ArmorTrimMixin {
     private static void appendAdditionalTooltips(ItemStack pArmor, RegistryAccess pRegistryAccess, List<Component> pTooltip, CallbackInfo ci) {
 
         //always false
-        if(StackedArmorTrimsForgeMod.isBetterTrimTooltipsEnables) return; // If BetterTrimTooltips is installed it will handle the tooltip generation instead.
+        if(StackedTrimsMod.isBetterTrimTooltipsEnables) return; // If BetterTrimTooltips is installed it will handle the tooltip generation instead.
 
         assert pArmor.getTag() != null;
         ListTag nbtList = pArmor.getTag().getList("Trims", 10);
