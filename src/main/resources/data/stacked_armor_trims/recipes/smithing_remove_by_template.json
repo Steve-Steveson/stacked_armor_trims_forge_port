@@ -1,5 +1,5 @@
 {
-  "type": "stacked_armor_trims_for_forge:smithing_trim_remove",
+  "type": "stacked_armor_trims:smithing_trim_remove",
   "addition": {
     "tag": "minecraft:axes"
   },
